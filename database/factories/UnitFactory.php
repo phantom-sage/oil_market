@@ -2,18 +2,18 @@
 
 namespace Database\Factories;
 
-use App\Models\Customer;
+use App\Models\Unit;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Faker\Factory as Faker;
 
-class CustomerFactory extends Factory
+class UnitFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Customer::class;
+    protected $model = Unit::class;
 
     /**
      * Define the model's default state.

@@ -3,32 +3,31 @@
 namespace Tests\Browser;
 
 use Faker\Factory;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Laravel\Dusk\Browser;
-use Tests\Browser\Pages\CreateCustomer;
+use Tests\Browser\Pages\CreateGroup;
 use Tests\DuskTestCase;
 
-class CreateCustomerTest extends DuskTestCase
+class CreateGroupTest extends DuskTestCase
 {
     use RefreshDatabase;
     use WithFaker;
 
     /**
-     * Test case for insert new customer record.
+     * Test case for store new group record
      *
      * @return void
      */
-    public function test_create_new_customer()
+    public function test_store_group_route()
     {
         $this->faker = Factory::create('ar_SA');
         $this->browse(function (Browser $browser) {
-            $browser->visit(new CreateCustomer())
-                    ->typeSlowly('@name', $this->faker->name, 100)
+            $browser->visit(new CreateGroup())
+                    ->typeSlowly('@name', $this->faker->name())
                 ->click('@submitBtn')
             ->assertPathIs('/launcher');
-            $this->assertDatabaseCount('customers', 1);
+            $this->assertDatabaseCount('groups', 1);
         });
     }
 }

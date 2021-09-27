@@ -17,7 +17,6 @@ class CustomerTest extends TestCase
      */
     public function test_create_customer_with_faker()
     {
-        $this->withoutExceptionHandling();
         Customer::factory()->count(1)->create();
         $this->assertDatabaseCount('customers', 1);
     }

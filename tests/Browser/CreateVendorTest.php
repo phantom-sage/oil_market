@@ -7,28 +7,28 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Laravel\Dusk\Browser;
-use Tests\Browser\Pages\CreateCustomer;
+use Tests\Browser\Pages\CreateVendor;
 use Tests\DuskTestCase;
 
-class CreateCustomerTest extends DuskTestCase
+class CreateVendorTest extends DuskTestCase
 {
     use RefreshDatabase;
     use WithFaker;
 
     /**
-     * Test case for insert new customer record.
+     * Test case for insert new vendor record.
      *
      * @return void
      */
-    public function test_create_new_customer()
+    public function test_create_new_vendor_record()
     {
         $this->faker = Factory::create('ar_SA');
         $this->browse(function (Browser $browser) {
-            $browser->visit(new CreateCustomer())
-                    ->typeSlowly('@name', $this->faker->name, 100)
+            $browser->visit(new CreateVendor())
+                    ->typeSlowly('@name', $this->faker->unique()->name(), 100)
                 ->click('@submitBtn')
-            ->assertPathIs('/launcher');
-            $this->assertDatabaseCount('customers', 1);
+                ->assertPathIs('/launcher');
+            $this->assertDatabaseCount('vendors', 1);
         });
     }
 }

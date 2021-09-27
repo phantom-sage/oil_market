@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Customer;
+use App\Models\Unit;
 use Illuminate\Http\Request;
 
-class CustomerController extends Controller
+class UnitController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -24,35 +24,35 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        return view('customer.create');
+        return view('unit.create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
         $data = $request->validate([
-            'name' => ['string', 'required', 'min:3', 'max:255', 'unique:customers'],
+            'name' => ['string', 'required', 'min:3', 'max:255', 'unique:units'],
         ]);
-        $customer = new Customer();
-        $customer['name'] = $data['name'];
-        $customer->save();
+        $unit = new Unit();
+        $unit['name'] = $data['name'];
+        $unit->save();
         return redirect()
             ->route('launcher')
-            ->with('message', __('messages.new_customer_created'));
+            ->with('message', __('messages.new_unit_created'));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Customer  $customer
+     * @param  \App\Models\Unit  $unit
      * @return \Illuminate\Http\Response
      */
-    public function show(Customer $customer)
+    public function show(Unit $unit)
     {
         //
     }
@@ -60,10 +60,10 @@ class CustomerController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Customer  $customer
+     * @param  \App\Models\Unit  $unit
      * @return \Illuminate\Http\Response
      */
-    public function edit(Customer $customer)
+    public function edit(Unit $unit)
     {
         //
     }
@@ -72,10 +72,10 @@ class CustomerController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Customer  $customer
+     * @param  \App\Models\Unit  $unit
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Customer $customer)
+    public function update(Request $request, Unit $unit)
     {
         //
     }
@@ -83,10 +83,10 @@ class CustomerController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Customer  $customer
+     * @param  \App\Models\Unit  $unit
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Customer $customer)
+    public function destroy(Unit $unit)
     {
         //
     }

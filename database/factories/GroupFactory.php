@@ -2,18 +2,17 @@
 
 namespace Database\Factories;
 
-use App\Models\Customer;
+use App\Models\Group;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Faker\Factory as Faker;
 
-class CustomerFactory extends Factory
+class GroupFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Customer::class;
+    protected $model = Group::class;
 
     /**
      * Define the model's default state.
@@ -22,9 +21,9 @@ class CustomerFactory extends Factory
      */
     public function definition()
     {
-        $this->faker = Faker::create('ar_SA');
+        $this->faker = \Faker\Factory::create('ar_SA');
         return [
-            'name' => $this->faker->unique()->name(),
+            'name' => $this->faker->name(),
         ];
     }
 }
