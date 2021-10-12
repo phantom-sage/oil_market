@@ -5,16 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'Laravel') }}</title>
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.rtl.min.css" integrity="sha384-gXt9imSW0VcJVHezoNQsP+TNrjYXoGcrqBZJpry9zJt8PCQjobwmhMGaDHTASo9N" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
-    <style>
-        @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css");
-    </style>
+    <script src="{{ asset('js/app.js') }}" defer></script>
 </head>
 <body style="font-family: 'Cairo', sans-serif;">
     <div class="container-fluid">
@@ -37,6 +34,9 @@
                             <ul class="collapse nav flex-column ms-1" id="submenu1" data-bs-parent="#menu">
                                 <li class="w-100">
                                     <a href="{{ route('customers.create') }}" class="nav-link px-0"> <span class="d-none d-sm-inline">{{ __('launcher.add_customer') }}</span></a>
+                                </li>
+                                <li class="w-100">
+                                    <a href="{{ route('customers.index') }}" class="nav-link px-0"> <span class="d-none d-sm-inline">{{ __('launcher.show_customer') }}</span></a>
                                 </li>
                             </ul>
                         </li>
@@ -71,53 +71,72 @@
                             </ul>
                         </li>
                         <!-- items menu -->
-                        <li>
+                        <li class="mb-3">
                             <a href="#itemsSubmenu" data-bs-toggle="collapse" class="nav-link px-5 border rounded shadow-sm align-middle">
                                 <i class="fs-4 bi-gear"></i> <span class="ms-1 d-none d-sm-inline">{{ __('launcher.items') }}</span> </a>
                             <ul class="collapse nav flex-column ms-1" id="itemsSubmenu" data-bs-parent="#menu">
                                 <li class="w-100">
                                     <a href="{{ route('items.create') }}" class="nav-link px-0"> <span class="d-none d-sm-inline">{{ __('launcher.add_item') }}</span></a>
                                 </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="#" class="nav-link px-0 align-middle">
-                                <i class="fs-4 bi-table"></i> <span class="ms-1 d-none d-sm-inline">Orders</span></a>
-                        </li>
-                        <li>
-                            <a href="#submenu2" data-bs-toggle="collapse" class="nav-link px-0 align-middle ">
-                                <i class="fs-4 bi-bootstrap"></i> <span class="ms-1 d-none d-sm-inline">Bootstrap</span></a>
-                            <ul class="collapse nav flex-column ms-1" id="submenu2" data-bs-parent="#menu">
                                 <li class="w-100">
-                                    <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Item</span> 1</a>
+                                    <a href="{{ route('items.index') }}" class="nav-link px-0"> <span class="d-none d-sm-inline">{{ __('launcher.preview_item') }}</span></a>
                                 </li>
-                                <li>
-                                    <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Item</span> 2</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="#submenu3" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
-                                <i class="fs-4 bi-grid"></i> <span class="ms-1 d-none d-sm-inline">Products</span> </a>
-                            <ul class="collapse nav flex-column ms-1" id="submenu3" data-bs-parent="#menu">
                                 <li class="w-100">
-                                    <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Product</span> 1</a>
-                                </li>
-                                <li>
-                                    <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Product</span> 2</a>
-                                </li>
-                                <li>
-                                    <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Product</span> 3</a>
-                                </li>
-                                <li>
-                                    <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Product</span> 4</a>
+                                    <a href="{{ route('items.move.to.show') }}" class="nav-link px-0"> <span class="d-none d-sm-inline">{{ __('launcher.move_to_show') }}</span></a>
                                 </li>
                             </ul>
                         </li>
+                        <!-- bills menu -->
                         <li>
-                            <a href="#" class="nav-link px-0 align-middle">
-                                <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Customers</span> </a>
+                            <a href="#billsSubmenu" data-bs-toggle="collapse" class="nav-link px-5 border rounded shadow-sm align-middle">
+                                <i class="fs-4 bi-gear"></i> <span class="ms-1 d-none d-sm-inline">{{ __('launcher.bills') }}</span> </a>
+                            <ul class="collapse nav flex-column ms-1" id="billsSubmenu" data-bs-parent="#menu">
+                                <li class="w-100">
+                                    <a href="{{ route('sell.bill') }}" class="nav-link px-0"> <span class="d-none d-sm-inline">{{ __('launcher.sell_bill') }}</span></a>
+                                </li>
+                                <li class="w-100">
+                                    <a href="{{ route('buy.bill') }}" class="nav-link px-0"> <span class="d-none d-sm-inline">{{ __('launcher.buy_bill') }}</span></a>
+                                </li>
+                            </ul>
                         </li>
+{{--                        <li>--}}
+{{--                            <a href="#" class="nav-link px-0 align-middle">--}}
+{{--                                <i class="fs-4 bi-table"></i> <span class="ms-1 d-none d-sm-inline">Orders</span></a>--}}
+{{--                        </li>--}}
+{{--                        <li>--}}
+{{--                            <a href="#submenu2" data-bs-toggle="collapse" class="nav-link px-0 align-middle ">--}}
+{{--                                <i class="fs-4 bi-bootstrap"></i> <span class="ms-1 d-none d-sm-inline">Bootstrap</span></a>--}}
+{{--                            <ul class="collapse nav flex-column ms-1" id="submenu2" data-bs-parent="#menu">--}}
+{{--                                <li class="w-100">--}}
+{{--                                    <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Item</span> 1</a>--}}
+{{--                                </li>--}}
+{{--                                <li>--}}
+{{--                                    <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Item</span> 2</a>--}}
+{{--                                </li>--}}
+{{--                            </ul>--}}
+{{--                        </li>--}}
+{{--                        <li>--}}
+{{--                            <a href="#submenu3" data-bs-toggle="collapse" class="nav-link px-0 align-middle">--}}
+{{--                                <i class="fs-4 bi-grid"></i> <span class="ms-1 d-none d-sm-inline">Products</span> </a>--}}
+{{--                            <ul class="collapse nav flex-column ms-1" id="submenu3" data-bs-parent="#menu">--}}
+{{--                                <li class="w-100">--}}
+{{--                                    <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Product</span> 1</a>--}}
+{{--                                </li>--}}
+{{--                                <li>--}}
+{{--                                    <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Product</span> 2</a>--}}
+{{--                                </li>--}}
+{{--                                <li>--}}
+{{--                                    <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Product</span> 3</a>--}}
+{{--                                </li>--}}
+{{--                                <li>--}}
+{{--                                    <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Product</span> 4</a>--}}
+{{--                                </li>--}}
+{{--                            </ul>--}}
+{{--                        </li>--}}
+{{--                        <li>--}}
+{{--                            <a href="#" class="nav-link px-0 align-middle">--}}
+{{--                                <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Customers</span> </a>--}}
+{{--                        </li>--}}
                     </ul>
                 </div>
             </div>
@@ -127,5 +146,11 @@
             </div>
         </div>
     </div>
+    @livewireScripts
+    @livewireChartsScripts
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 </body>
 </html>

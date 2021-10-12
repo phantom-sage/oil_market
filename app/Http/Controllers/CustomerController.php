@@ -10,11 +10,13 @@ class CustomerController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function index()
     {
-        //
+        return view('customer.index', [
+            'customers' => Customer::all(),
+        ]);
     }
 
     /**
@@ -84,10 +86,13 @@ class CustomerController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Customer  $customer
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Customer $customer)
     {
-        //
+        $customer->delete();
+        return redirect()
+            ->route('customers.index')
+            ->with('message', 'Customer deleted successfully');
     }
 }

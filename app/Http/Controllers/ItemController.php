@@ -6,17 +6,20 @@ use App\Models\Group;
 use App\Models\Item;
 use App\Models\Unit;
 use Illuminate\Http\Request;
+use function GuzzleHttp\Promise\all;
 
 class ItemController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function index()
     {
-        //
+        return view('item.index', [
+            'items' => Item::all(),
+        ]);
     }
 
     /**
@@ -109,5 +112,50 @@ class ItemController extends Controller
     public function destroy(Item $item)
     {
         //
+    }
+
+    public function moveToShow(Request $request)
+    {
+        $data = $request->validate([
+            'item_id' => ['required', 'integer', 'min:1'],
+            'item_amount' => ['required', 'integer', 'min:1'],
+        ]);
+        $item = Item::find($data['item_id']);
+        if (! $item)
+            abort(404);
+        if ($item['quantity_in_stock'] == 0)
+            return redirect()->
+            back()->
+            with('error_message', __('messages.error_message_item_quantity_in_stock_zero'));
+        if ($item['name'] == __('item.petro_12'))
+        {
+            $item['quantity_in_stock'] = $item['quantity_in_stock'] - $data['item_amount'];
+            $item['quantity_on_show'] = $item['quantity_on_show'] + ($data['item_amount'] * 12);
+            $item->save();
+            return redirect()
+                ->route('items.index')
+                ->with('message', __('messages.item_move_to_show_successfully'));
+        }
+        else if ($item['name'] == __('item.petro_6'))
+        {
+            $item['quantity_in_stock'] = $item['quantity_in_stock'] - $data['item_amount'];
+            $item['quantity_on_show'] = $item['quantity_on_show'] + ($data['item_amount'] * 6);
+            $item->save();
+            return redirect()
+                ->route('items.index')
+                ->with('message', __('messages.item_move_to_show_successfully'));
+        }
+        else
+        {
+            $item['quantity_in_stock'] = $item['quantity_in_stock'] - $data['item_amount'];
+            $item['quantity_on_show'] = $item['quantity_on_show'] + $data['item_amount'];
+            $item->save();
+            session([
+                'mohammed' => 'Fuck you'
+            ]);
+            return redirect()
+                ->route('items.index')
+                ->with('message', __('messages.item_move_to_show_successfully'));
+        }
     }
 }

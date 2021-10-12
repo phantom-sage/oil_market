@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Models\Item;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -25,6 +26,19 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
+        $schedule->call(function () {
+            foreach (Item::all() as $item)
+            {
+                if ($item['quantity_on_show'] <= 10)
+                    session([
+                        $item['name'] => 'is running low in show',
+                    ]);
+                if ($item['quantity_in_stock'] <= 10)
+                    session([
+                        $item['name'] => 'is running low in stock',
+                    ]);
+            }
+        })->everyMinute();
     }
 
     /**

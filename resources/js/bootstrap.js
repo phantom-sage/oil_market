@@ -26,3 +26,17 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     forceTLS: true
 // });
+
+
+/**
+ * Load vue js
+ */
+window.Vue = require('vue');
+import App from './views/App'
+import Vue from 'vue'
+//Vue.component('app-component', require('./views/App').default);
+
+const app = new Vue({
+    el: '#app',
+    components: { App }
+});
