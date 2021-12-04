@@ -23,6 +23,7 @@ class SellBill extends Model
         'payed', 'money'
     ];
 
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

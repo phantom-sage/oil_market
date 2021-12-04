@@ -25,6 +25,14 @@
                             </div>
 
                             <div class="mb-3">
+                                <label for="image" class="form-label fw-bold mb-2">{{ __('launcher.image') }}</label>
+                                <input type="file" name="image" class="form-control" id="image">
+                                @error('image')
+                                <strong class="text-danger">{{ $message }}</strong>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
                                 <label for="item_purchasing_price" class="form-label fw-bold mb-2">{{ __('launcher.item_purchasing_price') }}</label>
                                 <input type="text" name="purchasing_price" class="form-control" id="item_purchasing_price" placeholder="{{ __('launcher.item_purchasing_price') }}">
                                 @error('purchasing_price')

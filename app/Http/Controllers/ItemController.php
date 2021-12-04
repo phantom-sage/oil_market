@@ -30,6 +30,7 @@ class ItemController extends Controller
     public function create()
     {
         return view('item.create', [
+            'items' => Item::all(),
             'groups' => Group::all(),
             'units' => Unit::all(),
         ]);
@@ -53,6 +54,7 @@ class ItemController extends Controller
             'quantity_in_stock' => ['required', 'integer', 'numeric', 'min:0'],
             'group_id' => ['required', 'integer'],
             'unit_id' => ['required', 'integer'],
+            'image' => ['sometimes', 'file', 'image'],
         ]);
         $item = new Item();
         $item['name'] = $data['name'];
@@ -64,6 +66,11 @@ class ItemController extends Controller
         $item['quantity_in_stock'] = $data['quantity_in_stock'];
         $item['group_id'] = $data['group_id'];
         $item['unit_id'] = $data['unit_id'];
+        if ($request->file('image'))
+        {
+            $item_image_path = $request->image->store('item_image', 'public');
+            $item['image'] = $item_image_path;
+        }
         $item->save();
         return redirect()->route('launcher')
             ->with('message', __('messages.new_item_created'));
@@ -150,12 +157,56 @@ class ItemController extends Controller
             $item['quantity_in_stock'] = $item['quantity_in_stock'] - $data['item_amount'];
             $item['quantity_on_show'] = $item['quantity_on_show'] + $data['item_amount'];
             $item->save();
-            session([
-                'mohammed' => 'Fuck you'
-            ]);
             return redirect()
                 ->route('items.index')
                 ->with('message', __('messages.item_move_to_show_successfully'));
         }
+    }
+
+    /**
+     * Update items prices.
+     *
+     * @return Redirect
+     */
+    public function update_prices(Request $request)
+    {
+        $data = $request->validate([
+            'items' => ['required'],
+            'type' => ['required', 'string'],
+            'percentage' => ['required', 'numeric'],
+        ]);
+
+        // update all items prices.
+        if ($data['items'] == __('launcher.all'))
+        {
+            foreach (Item::all() as $item) {
+                $item['selling_price'] = $data['type'] == 'plus'
+                                         ? $item['selling_price'] + $data['percentage'] / 100
+                                         : $item['selling_price'] - $data['percentage'] / 100;
+                $item['purchasing_price'] = $data['type'] == 'plus'
+                                         ? $item['purchasing_price'] + $data['percentage'] / 100
+                                         : $item['purchasing_price'] - $data['percentage'] / 100;
+                $item['wholesale_price'] = $data['type'] == 'plus'
+                                         ? $item['wholesale_price'] + $data['percentage'] / 100
+                                         : $item['wholesale_price'] - $data['percentage'] / 100;
+                $item->save();
+            }
+        }
+        else
+        {
+            $item = Item::find($data['items']);
+            if (!$item) return redirect()->route('items.index')->with('item_not_found', 'Item not found');
+            $item['selling_price'] = $data['type'] == 'plus'
+                                    ? $item['selling_price'] + $data['percentage'] / 100
+                                    : $item['selling_price'] - $data['percentage'] / 100;
+            $item['purchasing_price'] = $data['type'] == 'plus'
+                                        ? $item['purchasing_price'] + $data['percentage'] / 100
+                                        : $item['purchasing_price'] - $data['percentage'] / 100;
+            $item['wholesale_price'] = $data['type'] == 'plus'
+                                        ? $item['wholesale_price'] + $data['percentage'] / 100
+                                        : $item['wholesale_price'] - $data['percentage'] / 100;
+            $item->save();
+        }
+        return redirect()->route('items.index')->with('items_price_updated_successfully', 'Item price updated successfully');
     }
 }

@@ -17,6 +17,7 @@ class CreateItemsTable extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->string('barcode');
+            $table->string('image')->nullable();
             $table->decimal('purchasing_price', 8, 2, true); // سعر الشراء
             $table->decimal('wholesale_price', 8, 2, true); // سعر الجملة
             $table->decimal('selling_price', 8, 2, true); // سعر البيع

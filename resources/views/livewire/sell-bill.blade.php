@@ -46,14 +46,14 @@
             <!-- group selling price -->
             <div class="col-md-6">
                 <label for="groupPrice" class="form-label">{{ __('launcher.group_price') }}</label>
-                <input wire:model="group_price" type="text" class="form-control" id="groupPrice" placeholder="0.0" min="0.0">
+                <input wire:model="group_price" disabled readonly type="text" class="form-control" id="groupPrice" placeholder="0.0" min="0.0">
                 @error('group_price') <span class="error invalid-feedback">{{ $message }}</span> @enderror
             </div>
 
             <!-- individual selling price -->
             <div class="col-md-6">
                 <label for="individualPrice" class="form-label">{{ __('launcher.individual_price') }}</label>
-                <input wire:model="individual_price" type="text" class="form-control" id="individualPrice" placeholder="0.0" min="0.0">
+                <input wire:model="individual_price" disabled readonly type="text" class="form-control" id="individualPrice" placeholder="0.0" min="0.0">
                 @error('individual_price') <span class="error invalid-feedback">{{ $message }}</span> @enderror
             </div>
 
@@ -152,7 +152,11 @@
             <td>{{ $customer_bill->item_name }}</td>
             <td>{{ $customer_bill->item_amount }}</td>
             <td>{{ $customer_bill->money }}</td>
-            <td><a class="btn btn-danger" href="{{ route('sell.bill.destroy', $customer_bill->id) }}">{{ __('launcher.delete') }}</a></td>
+            <td>
+                <a class="btn btn-danger" href="{{ route('sell.bill.destroy', $customer_bill->id) }}">{{ __('launcher.delete') }}</a> /
+                <a class="btn btn-warning" href="{{ route('bill.sell.dismiss', $customer_bill->customer_id) }}">{{ __('launcher.dismiss') }}</a> /
+                <a class="btn btn-info" href="{{ route('bill.sell.pay.part', $customer_bill->id) }}">{{ __('launcher.pay_part') }}</a>
+            </td>
         </tr>
         @endforeach
         <tr>
